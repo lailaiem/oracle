@@ -1,0 +1,34 @@
+{
+  "name": "Oracle: EM Helper",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "description": "Oracle - Epicmafia helper utility",
+  "icons": {
+    "19": "icons/icon19.png",
+    "48": "icons/icon48.png"
+  },
+  "permissions": [
+    "https://epicmafia.com/*",
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://epicmafia.com/*"
+      ],
+      "css": [
+        "src/inject.css"
+      ]
+    },
+    {
+      "matches": [
+        "https://epicmafia.com/*"
+      ],
+      "js": [
+      	"src/jquery.min.js",
+        "src/settings.js",
+        "src/inject.js"
+      ]
+    }
+  ]
+}

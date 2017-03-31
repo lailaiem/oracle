@@ -1,0 +1,149 @@
+._oracle_icon {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAYFpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHfK4NRGMc/22iyieLChbQ0uxoxtbhRtoSS1kwZbrZ3v9Q2b+/7SsutcqsocePXBX8Bt8q1UkRKyp1r4ga9nndTk+w5Pef5nO85z9M5zwF7LK8U9Lo+KBQNLToW8szG5zzOJxx04qILX0LR1ZFIZJKa9n6LzYrXPVat2uf+NVcqrStgaxAeVlTNEB4XnlwxVIu3hNuUXCIlfCLs1+SCwjeWnqzws8XZCn9arMWiYbC3CHuyvzj5i5WcVhCWl+Mt5JeVn/tYL3GnizPTErvEO9CJMkYIDxOMEiZIP0MyB+khQK+sqJHfV86fYklyFZlVSmgskiWHgV/UZamelpgRPS0jT8nq/9++6pmBQKW6OwT1j6b52g3OTfjaMM2PA9P8OgTHA5wXq/lL+zD4JvpGVfPuQfManF5UteQ2nK1D+72a0BJlySFuz2Tg5Ria4tB6BY3zlZ797HN0B7FV+apL2NkFn5xvXvgGa+9n6Oaaag8AAAAJcEhZcwAADsQAAA7EAZUrDhsAAAFCSURBVDiNY2QgAnw6e/4/Mp/P2JARmzqsgvgMwmcgTsPa086gGJKdzkzQQCZiDGJgYGCYOvMvLnvhgIUYgwJleKCs76QZhmkAAjzbyskg5f0dzkYHKN6EuQqbQdjAjaYbKL7ACDN8BuFzFYZhlbNMsMauBucXBqmYrwwMgv8Y+Pb9ZZCK+cqw/skXDHUoYYbsbJjibO2jDJ8YGBgYGGwYGBgYGD6xHWVg2MzAwMBgjWEg3CUwg5AVZFfgTtNTOxDBBfMREy6DCIGjZzdjiGFNtNhsRwZRoZuwiqOEWaAMD4brPj+8D2enl1zGMAA50uAMbCkfBuIiHzDwGrshXObYy2Bt7IthIBMhgxgYGFAMYmBgYFi2vxiFD9OPN8wYGKAx+uY2VnH02GbC5yp8SQObGpwuQ1aEHqtRjr0YMdqeduY/AAVIe2d8BtH4AAAAAElFTkSuQmCC);
+    height: 19px;
+    width: 19px;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+}
+
+._oInput {
+    padding: 2px;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    margin: 8px 0;
+    width: 150px;
+    font-size: 13.5px;
+    padding: 4px 8px !important;
+    box-sizing: border-box;
+}
+
+._oInput[disabled] {
+	font-style: italic;
+}
+
+#header #header_inner #auth {
+	right: 108px !important;
+}
+
+#top_messages {
+	right: 83px !important;
+}
+
+#_oracle_button {
+	width: 75px;
+    position: absolute;
+    right: 0;
+    top: 11px;
+}
+
+#_oracle_button ._oracle_icon {
+	position: relative;
+	left: 3px;
+}
+
+#_oracle_button a {
+	display: block;
+    background-color: #fff;
+    box-shadow: 0 0 3px #ccc;
+    border: 1px solid #888;
+    width: 75px;
+    height: 20px;
+    position: relative;
+    border: 1px solid #ccc;
+}
+
+#_oracle_button a:hover {
+	background-color: #fff;
+    border: 1px solid #b11;
+}
+
+#_oracle_button a span {
+	position: relative;
+	top: -3px;
+	left: 7px;
+    font-weight: normal;
+    font-size: 13.5px;
+    color: #cd88d3;
+    user-select: none;
+}
+
+/**
+ * ORACLE WINDOW
+ */
+
+#_oracle_window {
+	display: block;
+	position: absolute;
+	top: 70px;
+	right: 40px;
+	z-index: 100000;
+	width: 275px;
+	height: 400px;
+	box-sizing: border-box;
+	padding: 10px;
+	background-color: #FFF;
+	border: 1px solid #ccc;
+    box-shadow: rgb(204, 204, 204) 0px 0px 5px;
+}
+
+#_oracle_window ._owHeader {
+    border-bottom: 1px solid #cd88d3;
+    padding-bottom: 5px;
+    margin-bottom: 2px;
+}
+
+#_oracle_window ._owTitle {
+	font-weight: bold;
+	position: relative;
+    top: -2px;
+    left: 1px;
+    color: #cd88d3;
+}
+
+#_oracle_window ._owVersion {
+	font-size: 11px;
+	color: #bbb;
+	float: right;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+
+#_oracle_window .icon-search {
+	margin-left: 3px;
+	margin-right: 7px;
+	color: #aaa;
+}
+
+/** 
+ * AUTO REFRESH
+ */
+
+#_oAutoRefreshWrap {
+	display: inline-block;
+	border: 1px solid #cd88d3;
+	padding: 0 2px 2px 2px;
+	margin-left: 2px;
+}
+
+#_oAutoRefreshWrap::before {
+    content: '';
+    position: absolute;
+    right: 48px;
+    top: 9px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid #c788d3;
+}
+
+#_oAutoRefreshWrap ._oracle_icon {
+	top: 3px;
+	left: -4px;
+}
+
+._oLinkReport {
+	color: #b11;
+	text-transform: capitalize;
+}
