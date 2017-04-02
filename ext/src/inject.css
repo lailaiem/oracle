@@ -147,3 +147,28 @@
 	color: #b11;
 	text-transform: capitalize;
 }
+
+#_oCloseReport {
+    font-size: 14px;
+}
+
+._oChangeStatus {
+    background: linear-gradient(to bottom, #c490ce 0%,#b871c6 100%) !important;
+}
+
+._oChangeStatus ._oracle_icon {
+    top: 4px;
+}
+
+._oRehost {
+    margin-left: 5px;
+    border: 1px solid #c788d3;
+    padding: 5px 5px 4px 5px;
+    color: #c788d3;
+    font-size: 12px;
+}
+
+._oRehost:hover {
+    background-color: #c788d3;
+    color: white;
+}

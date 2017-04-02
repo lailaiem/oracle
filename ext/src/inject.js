@@ -11,6 +11,11 @@ if ($("#top_messages").length) {
 
 if ($(".ll-refresh").length) {
 	insertAutoRefresh();
+	insertRehost();
+}
+
+if ($(".select_status").length) {
+	insertReportComments();
 }
 
 if ($("#report_msg").length) {
@@ -67,7 +72,7 @@ function insertAutoRefresh() {
 
 	$(".ll-refresh").after(`<div id="_oAutoRefreshWrap" class="tt" data-title="Auto-refresh">
 			<input type="checkbox" id="_oAutoRefreshBox" ${autoRefresh ? "checked" : ""}/>
-			<i class="_oracle_icon"></i>
+			<label for="_oAutoRefreshBox"><i class="_oracle_icon"></i></label>
 		</div>`);
 
 	$("#_oAutoRefreshBox").change(e => {
@@ -86,10 +91,72 @@ function insertAutoRefresh() {
 	});
 }
 
+function insertRehost() {
+	$("body").on("mouseenter", ".gamerow", e => {
+		$(e.currentTarget).find(".gamesetup").after(`<div class="_oRehost">Rehost</div>`);
+	});
+	$("body").on("mouseleave", ".gamerow", e => {
+		$(e.currentTarget).find("._oRehost").remove();
+	});
+	$("body").on("click", "._oRehost", e => {
+		$(e.currentTarget).text("Rehosting");
+
+		const $gameRow = $(e.currentTarget).parents(".gamerow");
+		const gid = $gameRow.attr("data-gid");
+		const info = $.get(`https://epicmafia.com/game/${gid}/info`, data => {
+			const setup = data[1].data.match(/\/setup\/[0-9]+/)[0].split("/")[2];
+			const isGoldHeart = $gameRow.find("img[src='/images/goldlives.png']").length !== 0;
+			const isRedHeart = $gameRow.find("img[src='/images/lives.png']").length !== 0;
+			const rank = isGoldHeart ? 2 : (isRedHeart ? 1 : 0);
+
+			$.get(`https://epicmafia.com/game/add/mafia?setupid=${setup}&ranked=${rank}`, d => {
+				if (d[1].table) {
+					document.location = `https://epicmafia.com/game/${d[1].table}`;
+				} else {
+					alert(d[1].msg);
+				}
+			})
+		});
+	});
+}
+
 function insertReportEnhance() {
 	// Parse links
 	if ($("#report_msg").html().indexOf("epicmafia.com/")) {
-		$("#report_msg").html($("#report_msg").html().replace(/https:\/\/epicmafia.com\/(report|game)\/(\d+)\/?(?:review)?/,
+		$("#report_msg").html($("#report_msg").html().replace(/https:\/\/epicmafia.com\/(report|game)\/(\d+)\/?(?:review)?/g,
 			`<a href="https://epicmafia.com/$1/$2" class="_oLinkReport"><i class="_oracle_icon"></i> $1 $2</a>`));
 	}
+
+	// Auto close
+	if ($("#create_report_statement").length) {
+		$("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
+			<label for="_oCloseReport"><i class="_oracle_icon"></i> Close report upon submitting verdict</label></div>`);
+	
+		$("#report_controls .vv").after(`<br />
+			<a class="redbutton smallfont _oChangeStatus" data-t="open" data-status="open"><i class="_oracle_icon"></i> Open</a>
+			<a class="redbutton smallfont _oChangeStatus" data-t="in progress" data-status="processing"><i class="_oracle_icon"></i> In progress</a>
+			<a class="redbutton smallfont _oChangeStatus" data-t="closed" data-status="closed"><i class="_oracle_icon"></i> Closed</a>`);
+
+		$(`._oChangeStatus[data-t='${$(".report_status").text().toLowerCase()}']`).remove();
+	}
+
+	const reportId = document.location.pathname.split("/")[2];
+
+	$("._oChangeStatus").click(e => {
+		$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=${$(e.currentTarget).attr('data-status')}`, () => {
+			document.location.reload();
+		});
+		$(e.target).addClass("disabled");
+	});
+
+	$("#create_report_statement").submit(e => {
+		if ($("#_oCloseReportBox")[0].checked) {
+			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
+		}
+	});
+}
+
+function insertReportComments() {
+	const showSel = document.location == "https://epicmafia.com/report?status=oracle_mycomments";
+	$(".report_status:last").after(`<a class="report_status in_menu ${showSel ? 'sel' : ''}" href="/report?status=oracle_mycomments" style="background-color:#cd88d3">My comments</a>`)
 }
