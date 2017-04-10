@@ -79,7 +79,7 @@
 	right: 40px;
 	z-index: 100000;
 	width: 275px;
-	height: 400px;
+	height: 210px;
 	box-sizing: border-box;
 	padding: 10px;
 	background-color: #FFF;
@@ -113,6 +113,11 @@
 	margin-left: 3px;
 	margin-right: 7px;
 	color: #aaa;
+}
+
+#_oracle_window p {
+    font-size: 80%;
+    margin: 7px 0;
 }
 
 /** 
@@ -171,4 +176,119 @@
 ._oRehost:hover {
     background-color: #c788d3;
     color: white;
+}
+
+._oModLink {
+    color: #c788d3;
+    font-weight: normal;
+    font-size: 90%;
+}
+
+/** report blocks */
+
+._oReportBlock {
+    margin: 13px 0;
+    background-color: rgba(205, 136, 211, 0.26);
+    padding: 10px 20px;
+}
+
+._oReportStatus {
+    padding: 5px;
+    color: white;
+    opacity: 0.5;
+}
+
+._oReportStatus {
+    background-color: #11bb11;
+}
+
+._oReportStatus[data-status=closed] {
+    background-color: #bb1111;
+}
+
+._oReportStatus[data-status=processing] {
+    background-color: #bbbb11;
+}
+
+._oBackLink {
+    color: #c788d3 !important;
+}
+
+._oReportHeader {
+    font-size: 80%;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #cd88d3;
+}
+
+._oReportHeader a, ._oReportHeader span {
+    margin-right: 6px;
+}
+
+._oComment {
+    padding: 4px;
+    margin: 5px 0;
+    margin: 5px 0;
+}
+
+._oComment ._oCommentUser {
+    font-size: 80%;
+    margin-right: 5px;
+    display: inline-block;
+    width: 110px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    float: left;
+
+    padding: 4px 0 7px 7px;
+}
+
+._oComment ._oCommentUser img {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+._oComment ._oCommentContent {
+    width: calc(100% - 150px);
+    vertical-align: middle;
+    font-size: 80%;
+    line-height: 1.2;
+    display: inline-block;
+    margin-top: 3px;
+    margin-left: 10px;
+
+    padding: 5px 0 8px 7px;
+    background: #f5f5f5;
+    position: relative;
+    border: 1px solid #969696;
+    BO
+}
+
+._oComment ._oCommentContent::before {
+  content: '';
+  display: inline-block;
+  width: 0; 
+  height: 0; 
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent; 
+  border-right: 8px solid #f5f5f5;
+  position: absolute;
+  left: -8px;
+  top: 3px;
+  z-index: 2;
+}
+
+._oComment ._oCommentContent::after {
+  content: '';
+  display: inline-block;
+  width: 0; 
+  height: 0; 
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent; 
+  border-right: 8px solid #969696;
+  position: absolute;
+  left: -9px;
+  top: 3px;
+  z-index: 1;
 }

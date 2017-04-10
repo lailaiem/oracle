@@ -1,6 +1,4 @@
-const currentUser = $("#auth_top .user span").text().toLowerCase();
-const MODS = ["edark", "nathan", "lono", "expose", "jess", "apeescaper", "prayag", "patrykszczescie", "ucklar", "charley", "whitepimp007", "gerry", "merlot", "bebop", "lailai"];
-const modMode = MODS.indexOf(currentUser) !== -1;
+// currentUser defined in analytics
 
 let lastActivity = Date.now();
 $('body').mousemove(e => lastActivity = Date.now());
@@ -22,6 +20,10 @@ if ($("#report_msg").length) {
 	insertReportEnhance();
 }
 
+if ($("#nav li.sel a").text() === "Round") {
+	$("#subnav").append(`<li><a href="/lobby/rules" style="color: #c788d3">Rules</a></li>`);
+}
+
 function insertOracleButton() {
 	$("#top_messages").after('<div id="_oracle_button"><a><i class="_oracle_icon"></i><span>Oracle</span></a></div>');
 	$("#_oracle_button").click(() => {
@@ -32,11 +34,16 @@ function insertOracleButton() {
 		$("#container").prepend(`<div id="_oracle_window">
 				<div class="_owHeader">
 					<i class="_oracle_icon"></i> <span class="_owTitle">Oracle</span>
-					<span class="_owVersion">${modMode ? "mod" : "non-mod"} mode v0.1.0</span>
+					<span class="_owVersion">v0.1.0</span>
 				</div>
 				<div class="_owQuickNav">
 					<i class="icon-search"></i><input id="_owUser" class="_oInput" type="text" placeholder="Open profile of..." />
 				</div>
+				<p>New features will be added to Oracle over time!</p>
+				<p>Developed by <a href="https://epicmafia.com/user/12939">lailai</a></p>
+				<p>Source code available at <a href="https://github.com/lailaiem/oracle">GitHub</a></p>
+				<hr />
+				<p>Coming soon: epicmafia.net, your companion site to EM</p> 
 			</div>`);
 	});
 	$("body").click(e => {
@@ -52,6 +59,7 @@ function insertOracleButton() {
 		if (e.keyCode === 13) {
 			const username = $(e.target).val();
 			$(e.target).attr("disabled", true).val("Processing...");
+			trackAnalyticsEvent('quick_user', {username});
 
 			$.get(`https://epicmafia.com/user/search?q=${username}`, users => {
 				if (users.total > 0) {
@@ -93,7 +101,9 @@ function insertAutoRefresh() {
 
 function insertRehost() {
 	$("body").on("mouseenter", ".gamerow", e => {
-		$(e.currentTarget).find(".gamesetup").after(`<div class="_oRehost">Rehost</div>`);
+		if ($("#lobby_name").text() != "Games Lobby") {
+			$(e.currentTarget).find(".gamesetup").after(`<div class="_oRehost">Rehost</div>`);
+		}
 	});
 	$("body").on("mouseleave", ".gamerow", e => {
 		$(e.currentTarget).find("._oRehost").remove();
@@ -102,12 +112,15 @@ function insertRehost() {
 		$(e.currentTarget).text("Rehosting");
 
 		const $gameRow = $(e.currentTarget).parents(".gamerow");
+		const isGoldHeart = $gameRow.find("img[src='/images/goldlives.png'],img[src='/images/broken_goldlives.png']").length !== 0;
+		const isRedHeart = $gameRow.find("img[src='/images/lives.png'],img[src='/images/broken_lives.png']").length !== 0;
+		const rank = isGoldHeart ? 2 : (isRedHeart ? 1 : 0);
+
 		const gid = $gameRow.attr("data-gid");
 		const info = $.get(`https://epicmafia.com/game/${gid}/info`, data => {
 			const setup = data[1].data.match(/\/setup\/[0-9]+/)[0].split("/")[2];
-			const isGoldHeart = $gameRow.find("img[src='/images/goldlives.png']").length !== 0;
-			const isRedHeart = $gameRow.find("img[src='/images/lives.png']").length !== 0;
-			const rank = isGoldHeart ? 2 : (isRedHeart ? 1 : 0);
+
+			trackAnalyticsEvent('rehost_use', {setup, rank});
 
 			$.get(`https://epicmafia.com/game/add/mafia?setupid=${setup}&ranked=${rank}`, d => {
 				if (d[1].table) {
@@ -127,6 +140,18 @@ function insertReportEnhance() {
 			`<a href="https://epicmafia.com/$1/$2" class="_oLinkReport"><i class="_oracle_icon"></i> $1 $2</a>`));
 	}
 
+	// open
+	if ($("a[href='/report?status=closed']").length) {
+		$("a[href='/report?status=closed']").before(
+			`<a class="smallfont pretty _oBackLink" href="/report?status=open"><i class="icon-reply red"></i> Back (Open)</a>`)
+	}
+
+	// Modtools
+	if ($("#create_report_statement").length) {
+		const userHref = $('.report_target a').attr('href');
+		$('.report_target a').after(` <a href="/moderator${userHref}" class="_oModLink">(Mod tools)</a>`);
+	}
+
 	// Auto close
 	if ($("#create_report_statement").length) {
 		$("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
@@ -143,20 +168,84 @@ function insertReportEnhance() {
 	const reportId = document.location.pathname.split("/")[2];
 
 	$("._oChangeStatus").click(e => {
-		$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=${$(e.currentTarget).attr('data-status')}`, () => {
+		const newStatus = $(e.currentTarget).attr('data-status')
+		trackAnalyticsEvent('change_status', {newStatus, reportId});
+		$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=${newStatus}`, () => {
 			document.location.reload();
 		});
 		$(e.target).addClass("disabled");
 	});
 
 	$("#create_report_statement").submit(e => {
-		if ($("#_oCloseReportBox")[0].checked) {
+		const autoClose = $("#_oCloseReportBox")[0].checked;
+		trackAnalyticsEvent('report_statement', {autoClose, reportId});
+		if (autoClose) {
 			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
 		}
 	});
 }
 
 function insertReportComments() {
-	const showSel = document.location == "https://epicmafia.com/report?status=oracle_mycomments";
-	$(".report_status:last").after(`<a class="report_status in_menu ${showSel ? 'sel' : ''}" href="/report?status=oracle_mycomments" style="background-color:#cd88d3">My comments</a>`)
+	const showSel = document.location == "https://epicmafia.com/report?status=oracle_comments";
+	$(".report_status:last").after(`<a class="report_status in_menu ${showSel ? 'sel' : ''}" href="/report?status=oracle_comments" style="background-color:#cd88d3">Oracle Comments</a>`)
+
+	let waiting = 3;
+
+	if (showSel) {
+		trackAnalyticsEvent('report_comments', {});
+
+		$("#s_search").remove();
+		$("#reports .inform").text("This page will show all recent comments on reports related to you (i.e. you reported someone, you were reported, or you last moderated a report). It might take a while to load.");
+	
+		searchReports('open');
+		setTimeout(() => searchReports('closed'), 1250);
+		setTimeout(() => searchReports('processing'), 2500);
+	}
+
+	function searchReports(status) {
+		$.get(`https://epicmafia.com/report?status=${status}`, html => {
+			$vDom = $(html);
+			$vDom = $vDom.find("#reports");
+			$vDom.find(".report").each((i, v) => {
+				if ($(v).find(".sg")[0].innerText !== " 0") {
+					var reporter = $(v).find(".report_user1").text().trim().toLowerCase();
+					var reported = $(v).find(".report_user2").text().trim().toLowerCase();
+					var maybeMod = $(v).find(".moderator_name").text().toLowerCase();
+
+					if ([reporter, reported, maybeMod].indexOf(currentUser) !== -1) {
+						loadCommentsFrom($(v).attr("id").split("_")[1], $(v), status, maybeMod);
+					}
+				}
+			});
+			waiting--;
+			if (waiting === 0) {
+				if ($("#reports").children().length === 1) {
+					$("#reports").append(`<div class="inform w cnt">There are no recent reports involving you with comments!</div>`);
+				}
+			}
+		});
+	}
+
+	function loadCommentsFrom(id, $report, status, maybeMod) {
+		$.get(`https://epicmafia.com/comment/find/report/${id}?page=1`, data => {
+			$header1 = $report.find(".report_middle");
+			$comments = $vDom.find(".comments");
+
+			$header1.prepend($report.find(".redbutton"));
+			$header1.prepend(`<span class="_oReportStatus" data-status="${status}">${status}</span>`);
+			if (maybeMod) {
+				$header1.append(` <small>(Handled by ${maybeMod})</small>`);
+			}
+
+			$block = $(`<div class="_oReportBlock"><div class="_oReportHeader">${$header1.html()}</div></div>`);
+			for (var i = 0; i < data.data.length; i++) {
+				const comment = data.data[i];
+				$block.append(`<div class="_oComment">
+					<div class="_oCommentUser">
+						<a href="/user/${comment.user_id}"><img src="https://em-uploads.s3.amazonaws.com/avatars/${comment.user_id}_teeny.jpg">${comment.user_username}</a></div>
+						<div class="_oCommentContent">${comment.msg}</div></div>`);
+			}
+			$("#reports").append($block);
+		});
+	}
 }
