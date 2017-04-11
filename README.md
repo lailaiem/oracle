@@ -5,4 +5,4 @@ Oracle is a Chrome extension that enhances Epicmafia with numerous new features,
 
 Oracle is developed by lailai.
 
-Oracle is currently under active, pre-release development. Unless you are a developer, you should not run this extension.
+Get Oracle here: https://chrome.google.com/webstore/detail/oracle-for-epicmafia/cjohdaajjbgnilepmfmmeilfjhgedjpo
