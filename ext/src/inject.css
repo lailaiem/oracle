@@ -157,11 +157,11 @@
     font-size: 14px;
 }
 
-._oChangeStatus {
+._oChangeStatus, ._oNoVio {
     background: linear-gradient(to bottom, #c490ce 0%,#b871c6 100%) !important;
 }
 
-._oChangeStatus ._oracle_icon {
+._oChangeStatus ._oracle_icon, ._oNoVio ._oracle_icon {
     top: 4px;
 }
 
