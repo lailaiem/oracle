@@ -159,9 +159,7 @@ function insertReportEnhance() {
 	if ($("#create_report_statement").length) {
 
 	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio" style="margin-left: 10px"
-             href="https://epicmafia.com/report/${reportId}/edit/statement?statement=No+violation"
-             onclick="$.get("https://epicmafia.com/report/${reportId}/edit/statement?statement=No+violation")">
-             <i class="_oracle_icon"></i> No Vio</a>`);
+ 			href="https://epicmafia.com/report/${reportId}" id="no_vio_button"><i class="_oracle_icon"></i> No Vio</a>`);
 
 	    $("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
 			<label for="_oCloseReport"><i class="_oracle_icon"></i> Close report upon submitting verdict</label></div>`);
@@ -186,6 +184,14 @@ function insertReportEnhance() {
 	$("#create_report_statement").submit(e => {
 		const autoClose = $("#_oCloseReportBox")[0].checked;
 		trackAnalyticsEvent('report_statement', {autoClose, reportId});
+		if (autoClose) {
+			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
+		}
+	});
+	$("#no_vio_button").click(e => {
+		const autoClose = $("#_oCloseReportBox")[0].checked;
+		//trackAnalyticsEvent('report_statement', {autoClose, reportId});
+		$.get(`https://epicmafia.com/report/` + reportId + `/edit/statement?statement=No+violation`);
 		if (autoClose) {
 			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
 		}
