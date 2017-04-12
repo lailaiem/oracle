@@ -152,11 +152,20 @@ function insertReportEnhance() {
 		$('.report_target a').after(` <a href="/moderator${userHref}" class="_oModLink">(Mod tools)</a>`);
 	}
 
+	// Initializing earlier so variable can be used in the no vio button
+	const reportId = document.location.pathname.split("/")[2];
+
 	// Auto close
 	if ($("#create_report_statement").length) {
-		$("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
+
+	    $("#create_report_statement").append(`<a class="redbutton smallfont _oChangeStatus" style="margin-left: 10px"
+             href="https://epicmafia.com/report/` + reportId + `/edit/statement?statement=No+violation"
+             onclick="$.get("https://epicmafia.com/report/` + reportId + `/edit/statement?statement=No+violation")">
+             <i class="_oracle_icon"></i> No Vio</a>`);
+
+	    $("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
 			<label for="_oCloseReport"><i class="_oracle_icon"></i> Close report upon submitting verdict</label></div>`);
-	
+
 		$("#report_controls .vv").after(`<br />
 			<a class="redbutton smallfont _oChangeStatus" data-t="open" data-status="open"><i class="_oracle_icon"></i> Open</a>
 			<a class="redbutton smallfont _oChangeStatus" data-t="in progress" data-status="processing"><i class="_oracle_icon"></i> In progress</a>
@@ -164,8 +173,6 @@ function insertReportEnhance() {
 
 		$(`._oChangeStatus[data-t='${$(".report_status").text().toLowerCase()}']`).remove();
 	}
-
-	const reportId = document.location.pathname.split("/")[2];
 
 	$("._oChangeStatus").click(e => {
 		const newStatus = $(e.currentTarget).attr('data-status')
@@ -196,7 +203,7 @@ function insertReportComments() {
 
 		$("#s_search").remove();
 		$("#reports .inform").text("This page will show all recent comments on reports related to you (i.e. you reported someone, you were reported, or you last moderated a report). It might take a while to load.");
-	
+
 		searchReports('open');
 		setTimeout(() => searchReports('closed'), 1250);
 		setTimeout(() => searchReports('processing'), 2500);
