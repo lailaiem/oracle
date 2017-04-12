@@ -40,10 +40,10 @@ function insertOracleButton() {
 					<i class="icon-search"></i><input id="_owUser" class="_oInput" type="text" placeholder="Open profile of..." />
 				</div>
 				<p>New features will be added to Oracle over time!</p>
-				<p>Developed by <a href="https://epicmafia.com/user/12939">lailai</a></p>
-				<p>Source code available at <a href="https://github.com/lailaiem/oracle">GitHub</a></p>
+				<p>Developed by <a href="https://epicmafia.com/user/12939">lailai</a> with contributions from <a href="https://epicmafia.com/u/Whitepimp007">Whitepimp007</a></p>
+				<p>Oracle is open source! <a href="https://github.com/lailaiem/oracle">GitHub</a></p>
 				<hr />
-				<p>Coming soon: epicmafia.net, your companion site to EM</p> 
+				<p>Coming soon: epicmafia.net, your companion site for EM</p>
 			</div>`);
 	});
 	$("body").click(e => {
@@ -158,8 +158,7 @@ function insertReportEnhance() {
 	// Auto close
 	if ($("#create_report_statement").length) {
 
-	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio" style="margin-left: 10px"
- 			href="https://epicmafia.com/report/${reportId}" id="no_vio_button"><i class="_oracle_icon"></i> No Vio</a>`);
+	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio"><i class="_oracle_icon"></i> nv</a>`);
 
 	    $("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
 			<label for="_oCloseReport"><i class="_oracle_icon"></i> Close report upon submitting verdict</label></div>`);
@@ -188,13 +187,14 @@ function insertReportEnhance() {
 			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
 		}
 	});
-	$("#no_vio_button").click(e => {
-		const autoClose = $("#_oCloseReportBox")[0].checked;
-		//trackAnalyticsEvent('report_statement', {autoClose, reportId});
-		$.get(`https://epicmafia.com/report/` + reportId + `/edit/statement?statement=No+violation`);
-		if (autoClose) {
-			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
-		}
+
+	$("._oNoVio").click(e => {
+		trackAnalyticsEvent('report_novio', {reportId});
+		$.get(`https://epicmafia.com/report/${reportId}/edit/statement?statement=nv`, () => {
+			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`, () => {
+				document.location.reload();
+			});
+		});
 	});
 }
 
