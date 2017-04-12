@@ -169,7 +169,7 @@ function insertReportEnhance() {
 		$("#report_controls .vv").after(`<br />
 			<a class="redbutton smallfont _oChangeStatus" data-t="open" data-status="open"><i class="_oracle_icon"></i> Open</a>
 			<a class="redbutton smallfont _oChangeStatus" data-t="in progress" data-status="processing"><i class="_oracle_icon"></i> In progress</a>
-			<a class="redbutton smallfont _oChangeStatus" data-t="closed" data-status="closed"><i class="_oracle_icon"></i> Closed</a>`);
+			<a class="redbutton smallfont _oChangeStatus" data-t="closed" data-status="closed"><i class="_oracle_icon"></i> Close</a>`);
 
 		$(`._oChangeStatus[data-t='${$(".report_status").text().toLowerCase()}']`).remove();
 	}
