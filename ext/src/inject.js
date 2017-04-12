@@ -190,7 +190,7 @@ function insertReportEnhance() {
 
 	$("._oNoVio").click(e => {
 		trackAnalyticsEvent('report_novio', {reportId});
-		$.get(`https://epicmafia.com/report/${reportId}/edit/statement?statement=nv`, () => {
+		$.get(`https://epicmafia.com/report/${reportId}/edit/statement?statement=no+violation`, () => {
 			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`, () => {
 				document.location.reload();
 			});
