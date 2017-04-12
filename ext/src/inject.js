@@ -158,9 +158,9 @@ function insertReportEnhance() {
 	// Auto close
 	if ($("#create_report_statement").length) {
 
-	    $("#create_report_statement").append(`<a class="redbutton smallfont _oChangeStatus" style="margin-left: 10px"
-             href="https://epicmafia.com/report/` + reportId + `/edit/statement?statement=No+violation"
-             onclick="$.get("https://epicmafia.com/report/` + reportId + `/edit/statement?statement=No+violation")">
+	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio" style="margin-left: 10px"
+             href="https://epicmafia.com/report/${reportId}/edit/statement?statement=No+violation"
+             onclick="$.get("https://epicmafia.com/report/${reportId}/edit/statement?statement=No+violation")">
              <i class="_oracle_icon"></i> No Vio</a>`);
 
 	    $("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
