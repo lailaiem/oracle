@@ -161,13 +161,10 @@
     background: linear-gradient(to bottom, #c490ce 0%,#b871c6 100%) !important;
 }
 
-<<<<<<< HEAD
-=======
 ._oNoVio {
     margin-left: 10px;
 }
 
->>>>>>> 852775d86a9a245bac2eb86b2cffa3b900296443
 ._oChangeStatus ._oracle_icon, ._oNoVio ._oracle_icon {
     top: 4px;
 }
