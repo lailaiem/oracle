@@ -180,11 +180,19 @@ function insertReportEnhance() {
 		$(e.target).addClass("disabled");
 	});
 
+	let actuallyLetProceed = false;
 	$("#create_report_statement").submit(e => {
+		if (actuallyLetProceed) {
+			return;
+		}
 		const autoClose = $("#_oCloseReportBox")[0].checked;
 		trackAnalyticsEvent('report_statement', {autoClose, reportId});
 		if (autoClose) {
-			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
+			e.preventDefault();
+			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`, () => {
+				actuallyLetProceed = true;
+				$("#create_report_statement").submit();
+			});
 		}
 	});
 
