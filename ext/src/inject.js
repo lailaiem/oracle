@@ -158,12 +158,7 @@ function insertReportEnhance() {
 	// Auto close
 	if ($("#create_report_statement").length) {
 
-<<<<<<< HEAD
-	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio" style="margin-left: 10px"
- 			href="https://epicmafia.com/report/${reportId}" id="no_vio_button"><i class="_oracle_icon"></i> No Vio</a>`);
-=======
 	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio"><i class="_oracle_icon"></i> nv</a>`);
->>>>>>> 852775d86a9a245bac2eb86b2cffa3b900296443
 
 	    $("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
 			<label for="_oCloseReport"><i class="_oracle_icon"></i> Close report upon submitting verdict</label></div>`);
@@ -200,15 +195,6 @@ function insertReportEnhance() {
 			});
 		}
 	});
-<<<<<<< HEAD
-	$("#no_vio_button").click(e => {
-		const autoClose = $("#_oCloseReportBox")[0].checked;
-		//trackAnalyticsEvent('report_statement', {autoClose, reportId});
-		$.get(`https://epicmafia.com/report/` + reportId + `/edit/statement?statement=No+violation`);
-		if (autoClose) {
-			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`);
-		}
-=======
 
 	$("._oNoVio").click(e => {
 		trackAnalyticsEvent('report_novio', {reportId});
@@ -217,7 +203,6 @@ function insertReportEnhance() {
 				document.location.reload();
 			});
 		});
->>>>>>> 852775d86a9a245bac2eb86b2cffa3b900296443
 	});
 }
 
