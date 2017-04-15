@@ -28,7 +28,7 @@ if ($("#usertitle").length) {
     const userpage = $(".lcontrols > a").attr("href").split("/")[2]
 
     $.get(`https://epicmafia.com/uploads/deathsounds/${userpage}.ogg`, () => {
-        $("#finduserbox").append(`<span class="lcontrols" style="color: #c788d3"><a href="https://epicmafia.com/uploads/deathsounds/${userpage}.ogg"><i class="icon-music"></i></a></span>`);
+        $("#finduserbox").append(`<span class="lcontrols"><a href="https://epicmafia.com/uploads/deathsounds/${userpage}.ogg"><i class="icon-music" style="color: #c788d3"></i></a></span>`);
     })
 }
 
