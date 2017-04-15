@@ -32,6 +32,11 @@ if ($("#usertitle").length) {
     })
 }
 
+if ($("#admin_info").length) {
+		$("a.pretty").before(
+			`<a class="smallfont pretty _oBackLink" href="/report?status=open"><i class="icon-reply red"></i> Back (Open)</a>`)
+	}
+
 function insertOracleButton() {
 	$("#top_messages").after('<div id="_oracle_button"><a><i class="_oracle_icon"></i><span>Oracle</span></a></div>');
 	$("#_oracle_button").click(() => {
