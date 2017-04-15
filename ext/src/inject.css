@@ -297,3 +297,14 @@
   top: 3px;
   z-index: 1;
 }
+
+._orcViolations h3 {
+    position: relative;
+    padding-left: 33px;
+}
+
+._orcViolations ._oracle_icon {
+    position: absolute;
+    left: 7px;
+    top: 3px;
+}
