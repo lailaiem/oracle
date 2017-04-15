@@ -28,7 +28,8 @@
       	"src/jquery.min.js",
         "src/analytics.js",
         "src/settings.js",
-        "src/inject.js"
+        "src/inject.js",
+        "src/reports.js"
       ]
     }
   ]
