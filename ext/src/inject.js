@@ -17,11 +17,17 @@ if ($("#nav li.sel a").text() === "Round") {
 }
 
 if ($("#usertitle").length) {
-    const userpage = $(".lcontrols > a").attr("href").split("/")[2]
+    const userid = $(".lcontrols > a").attr("href").split("/")[2]
 
-    $.get(`https://epicmafia.com/uploads/deathsounds/${userpage}.ogg`, () => {
-        $("#finduserbox").append(`<span class="lcontrols"><a href="https://epicmafia.com/uploads/deathsounds/${userpage}.ogg"><i class="icon-music" style="color: #c788d3"></i></a></span>`);
-    })
+    $.get(`https://epicmafia.com/uploads/deathsounds/${userid}.ogg`, () => {
+        $("#finduserbox").append(`<span class="lcontrols"><a class="_oDeath"><i class="icon-music" style="color: #c788d3"></i></a></span>`);
+    	$("._oDeath").click(() => { 
+    		trackAnalyticsEvent('deathsound_click', {userid});
+    		setTimeout(() => {
+    			document.location = `https://epicmafia.com/uploads/deathsounds/${userid}.ogg`;
+    		}, 200);
+    	});
+    });
 }
 
 if ($("#admin_info").length) {
