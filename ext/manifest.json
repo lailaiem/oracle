@@ -29,7 +29,8 @@
         "src/analytics.js",
         "src/settings.js",
         "src/inject.js",
-        "src/reports.js"
+        "src/reports.js",
+        "src/game.js"
       ]
     }
   ]

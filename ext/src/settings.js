@@ -6,15 +6,21 @@ function checkSettings() {
 		UNIQUE_ID = i.a_uniqueId || genUniqueId();
 		chrome.storage.sync.set({
 			a_uniqueId: UNIQUE_ID,
-			s_autoRefresh: i.s_autoRefresh || true
+			a_lastVersion: '0.1.1',
+			s_autoRefresh: i.s_autoRefresh || true,
+			s_emsettings: i.s_emsettings || []
+		}, () => {
+			// can't set settings until this is intialised, use a settimeout
+			window.setSetting = chrome.storage.sync.set;
 		});
 	});
 }
 
+window.getSetting = chrome.storage.sync.get;
+
+
 checkSettings();
 
-var getSetting = chrome.storage.sync.get;
-var setSetting = chrome.storage.sync.set;
 
 function genUniqueId() {
 	UNIQUE_ID = 'i1_' + Math.random().toString(36).substr(2, 12);

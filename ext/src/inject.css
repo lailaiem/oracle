@@ -320,3 +320,7 @@ select[name='siterule_id'] {
 ._orcAutoVio {
     max-width: 40em !important;
 }
+
+#settings_inner {
+    border: 1px solid #cd88d3 !important;
+}
