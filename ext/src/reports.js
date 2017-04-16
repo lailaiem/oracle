@@ -151,7 +151,8 @@ function fetchUserVioHistory(userurl) {
 		const vios = $(data).find("#violations");
 
 		if (vios.length === 0) {
-			$("#report_rt").append("<div id='violations _orcViolations><h3>Violations</h3><p>No violations!</p></div>");
+			console.log('hi');
+			$("#report_rt").append("<div id='violations _orcViolations'><h3>Violations</h3><p class='inform cnt' style='max-width: 40em'>No violations!</p></div>");
 			return;
 		}
 
