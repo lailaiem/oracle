@@ -199,7 +199,7 @@ function fetchUserVioHistory(userurl) {
 				$('#create_user_violation p:last').after("<div class='_orcAutoVio inform cnt'>Applying this violation requires manual handling (e.g. lobby or site ban)</div>"); 
 			} else {
 				$('#create_user_violation input[type="submit"]').after(`<a class='_orcAutoVioSubmit redbutton smallfont'
-					data-action='${punish}' data-viotext='${selectedVio} ${newCountText} - ${readablePunishmentFor(punish)}'><i class="_oracle_icon"></i> Autovio: ${punish}</a>`);
+					data-action='${punish}' data-vio='${selectedVio}' data-viotext='${selectedVio} ${newCountText} - ${readablePunishmentFor(punish)}'><i class="_oracle_icon"></i> Autovio: ${punish}</a>`);
 			}
 		});
 	});
@@ -208,6 +208,7 @@ function fetchUserVioHistory(userurl) {
 	$('body').on('click', '._orcAutoVioSubmit', e => {
 		const punish = $(e.currentTarget).attr('data-action');
 		$(e.currentTarget).text("Processing");
+		trackAnalyticsEvent('autovio', {report_id, punish, vio: $(e.currentTarget).attr('data-vio')});
 
 		// First, apply the vio
 		let count = 3; // vio, statement, close

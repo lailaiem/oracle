@@ -3,6 +3,7 @@ let UNIQUE_ID = 'i0_unset';
 
 function trackAnalyticsEvent(eventName, eventProps) {
 	if(isDevMode()) {
+		console.log('analytics event', eventName, eventProps);
 		return;
 	}
 	if (UNIQUE_ID === "i0_unset") {
