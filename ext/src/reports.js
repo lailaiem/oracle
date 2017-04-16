@@ -19,6 +19,8 @@ function insertReportEnhance() {
 }
 
 function insertModReportEnhance() {
+	fetchUserVioHistory();
+
 	// open
 	if ($("a[href='/report?status=closed']").length) {
 		$("a[href='/report?status=closed']").before(
