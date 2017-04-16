@@ -24,6 +24,19 @@ if ($("#usertitle").length) {
     })
 }
 
+if ($("#usertitle").length) {
+    const userpage = $(".lcontrols > a").attr("href").split("/")[2]
+
+    $.get(`https://epicmafia.com/uploads/deathsounds/${userpage}.ogg`, () => {
+        $("#finduserbox").append(`<span class="lcontrols"><a href="https://epicmafia.com/uploads/deathsounds/${userpage}.ogg"><i class="icon-music" style="color: #c788d3"></i></a></span>`);
+    })
+}
+
+if ($("#admin_info").length) {
+		$("a.pretty").before(
+			`<a class="smallfont pretty _oBackLink" href="/report?status=open"><i class="icon-reply red"></i> Back (Open)</a>`)
+	}
+
 function insertOracleButton() {
 	$("#top_messages").after('<div id="_oracle_button"><a><i class="_oracle_icon"></i><span>Oracle</span></a></div>');
 	$("#_oracle_button").click(() => {
