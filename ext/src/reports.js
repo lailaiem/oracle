@@ -6,15 +6,19 @@ if ($("#report_msg").length) {
 	insertReportEnhance();
 }
 
-function insertReportEnhance() {
-	fetchUserVioHistory($("#report_users a.user")[1].href);
+if ($("#report_controls").length) {
+	insertModReportEnhance();
+}
 
+function insertReportEnhance() {
 	// Parse links
 	if ($("#report_msg").html().indexOf("epicmafia.com/")) {
 		$("#report_msg").html($("#report_msg").html().replace(/https:\/\/epicmafia.com\/(report|game)\/(\d+)\/?(?:review)?/g,
 			`<a href="https://epicmafia.com/$1/$2" class="_oLinkReport"><i class="_oracle_icon"></i> $1 $2</a>`));
 	}
+}
 
+function insertModReportEnhance() {
 	// open
 	if ($("a[href='/report?status=closed']").length) {
 		$("a[href='/report?status=closed']").before(
