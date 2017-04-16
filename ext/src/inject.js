@@ -39,7 +39,7 @@ function insertOracleButton() {
 		$("#container").prepend(`<div id="_oracle_window">
 				<div class="_owHeader">
 					<i class="_oracle_icon"></i> <span class="_owTitle">Oracle</span>
-					<span class="_owVersion">v0.1.0</span>
+					<span class="_owVersion">v0.1.1</span>
 				</div>
 				<div class="_owQuickNav">
 					<i class="icon-search"></i><input id="_owUser" class="_oInput" type="text" placeholder="Open profile of..." />
