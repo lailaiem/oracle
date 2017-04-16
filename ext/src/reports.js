@@ -73,11 +73,16 @@ function insertReportEnhance() {
 
 	$("._oNoVio").click(e => {
 		trackAnalyticsEvent('report_novio', {reportId});
-		$.get(`https://epicmafia.com/report/${reportId}/edit/statement?statement=no+violation`, () => {
-			$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`, () => {
+		let count = 2;
+		$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`, next);
+		$.get(`https://epicmafia.com/report/${reportId}/edit/statement?statement=no+violation`, next);
+
+		function next() {
+			count--;
+			if (count === 0) {
 				document.location.reload();
-			});
-		});
+			}
+		}
 	});
 }
 
@@ -147,18 +152,198 @@ function insertReportComments() {
 }
 
 function fetchUserVioHistory(userurl) {
+	const user_id = userurl.split('/')[4].replace('#', '');
+	const report_id =  document.location.href.split("/")[4].replace('#', '');
+
 	$.get(userurl, data => {
 		const vios = $(data).find("#violations");
+		const vioAssocArray = {}; // {'Violation Name': 2}
 
 		if (vios.length === 0) {
-			console.log('hi');
 			$("#report_rt").append("<div id='violations _orcViolations'><h3>Violations</h3><p class='inform cnt' style='max-width: 40em'>No violations!</p></div>");
-			return;
+		} else {
+			const vioMatch = vios.html().match(/<div class="siterule_name">[A-Za-z0-9 ]*/g);
+			
+			$("#report_rt").append(vios);
+			$("#violations").addClass("_orcViolations");
+			$("#violations h3").prepend("<i class='_oracle_icon'></i> ");
+
+			for (let i = 0; i < vioMatch.length; i++) {
+				const vioName = vioMatch[i].split('>')[1];
+				if (!vioAssocArray[vioName]) {
+					vioAssocArray[vioName] = 1;
+				} else {
+					vioAssocArray[vioName]++;
+				}
+			}
 		}
 
-		const vioMatch = vios.html().match(/<div class="siterule_name">([A-Za-z0-9 ]*)/g);
-		$("#report_rt").append(vios);
-		$("#violations").addClass("_orcViolations");
-		$("#violations h3").prepend("<i class='_oracle_icon'></i> ");
+		for (vio in vioAssocArray) {
+			const instances = vioAssocArray[vio];
+			let autoText = '';
+
+			$("select[name='siterule_id']").find(`option:contains('${vio}')`)
+				.text(`${vio} [${instances}]${autoText}`);
+		}
+
+		$("select[name='siterule_id']").change(e => {
+			const selectedVio = $(e.currentTarget).find(':selected').text().replace(/ \[[0-9]+\]/, '');
+			const punish = getPunishmentFor(selectedVio, vioAssocArray[selectedVio] || 0);
+
+			const newCountText = readableTextFor((vioAssocArray[selectedVio] || 0) + 1);
+			
+			$('._orcAutoVio,._orcAutoVioSubmit').remove();
+
+			if (punish === 'none') {
+			} else if (punish === 'custom') {
+				$('#create_user_violation p:last').after("<div class='_orcAutoVio inform cnt'>Applying this violation requires manual handling (e.g. lobby or site ban)</div>"); 
+			} else {
+				$('#create_user_violation input[type="submit"]').after(`<a class='_orcAutoVioSubmit redbutton smallfont'
+					data-action='${punish}' data-viotext='${selectedVio} ${newCountText} - ${readablePunishmentFor(punish)}'><i class="_oracle_icon"></i> Autovio: ${punish}</a>`);
+			}
+		});
 	});
+
+
+	$('body').on('click', '._orcAutoVioSubmit', e => {
+		const punish = $(e.currentTarget).attr('data-action');
+		$(e.currentTarget).text("Processing");
+
+		// First, apply the vio
+		let count = 3; // vio, statement, close
+
+		$.ajax({
+			url: '/violation',
+			type: 'post',
+			data: {
+				user_id,
+				report_id,
+				siterule_id: $("select[name='siterule_id']").val()
+			},
+			success: next
+		});
+
+		// But also set the statement
+		const statement = $(e.currentTarget).attr('data-viotext');
+		$.get(`https://epicmafia.com/report/${report_id}/edit/statement?statement=${statement}`, next);
+
+		// And also close the report
+		$.get(`https://epicmafia.com/report/${report_id}/edit/status?status=closed`, next);
+
+		// For suspensions, suspend and set moderator reason
+		if (!isNaN(parseInt(punish[0]))) {
+			count++;
+
+			const punishToDurationSecs = {'1hr': 3600, '12hr': 43200, '24hr': 86400};
+			$.get(`https://epicmafia.com/moderator/action/suspend_all/user/${user_id}/duration/${punishToDurationSecs[punish]}`, () => {
+				$.get('https://epicmafia.com/action/page?page=1', data => {
+					let actionId = 0;
+					data = JSON.parse(data);
+					for (let i = 0; i < 5; i++) {
+						if (data['data'][i]['can_write_reason'] === true) {
+							actionId = data.data[i]['id'];
+							break;
+						}
+					}
+
+					$.get(`https://epicmafia.com/action/${actionId}/edit_reason?reason=${statement}+(via+Oracle)`, next);
+				});
+			});
+		}
+
+		function next() {
+			count--;
+			if (count === 0) {
+				document.location.reload();
+			}
+		}
+	});
+}
+
+function getPunishmentFor(vio, existingTimes) {
+	switch (vio) {
+		case 'Game Related Suicide':
+			return l(['warn', '1hr', '12hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Trolling':
+			return l(['1hr', '12hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Game Throwing':
+			return l(['24hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Insufficient Participation':
+			return l(['warn', '1hr', '12hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Lobby Camping':
+			return l(['warn', 'custom'], existingTimes);
+		break;
+		case 'Spamming':
+			return l(['warn', '1hr', '12hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Cheating':
+			return l(['24hr', 'custom'], existingTimes);
+		break;
+		case 'Copied Mechanics':
+			return l(['warn', '1hr', '12hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Encouraging Rule Breakage':
+			return l(['warn', '1hr', '12hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Lobby Trolling':
+			return l(['warn', 'custom'], existingTimes);
+		break;
+		case 'Outside Game Influence':
+			return l(['warn', '12hr', '24hr', 'custom'], existingTimes);
+		break;
+		case 'Hateful Comments':
+			return l(['warn', 'custom'], existingTimes);
+		break;
+		case 'Harassment':
+			return l(['warn', 'custom'], existingTimes);
+		break;
+		case 'Bypassing Suspensions':
+			return l(['custom'], existingTimes);
+		break;
+		case 'Note':
+			return 'none';
+		break;
+		default:
+			return 'custom';
+		break;
+	}
+
+	// accesses an array, but returns last element if times >= arr.length
+	function l(arr, times) {
+		if (times >= arr.length) {
+			return arr[arr.length-1];
+		} else {
+			return arr[times];
+		}
+	}
+}
+
+function readableTextFor(number) {
+	if (number === 1) {
+		return '1st';
+	} else if (number === 2) {
+		return '2nd';
+	} else if (number === 3) {
+		return '3rd';
+	} else {
+		return number + 'th';
+	}
+}
+
+function readablePunishmentFor(punishment) {
+	if (punishment === '1hr') {
+		return '1 hour suspension';
+	} else if (punishment === '12hr') {
+		return '12 hour suspension';
+	} else if (punishment === '24hr') {
+		return '24 hour suspension';
+	} else if (punishment === 'warn') {
+		return 'Warning';
+	} else {
+		return '??? (Oracle error, please contact lailai)';
+	}
 }

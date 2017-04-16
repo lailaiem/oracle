@@ -157,7 +157,7 @@
     font-size: 14px;
 }
 
-._oChangeStatus, ._oNoVio {
+._oChangeStatus, ._oNoVio, ._orcAutoVioSubmit {
     background: linear-gradient(to bottom, #c490ce 0%,#b871c6 100%) !important;
 }
 
@@ -165,7 +165,7 @@
     margin-left: 10px;
 }
 
-._oChangeStatus ._oracle_icon, ._oNoVio ._oracle_icon {
+._oChangeStatus ._oracle_icon, ._oNoVio ._oracle_icon, ._orcAutoVioSubmit ._oracle_icon {
     top: 4px;
 }
 
@@ -307,4 +307,16 @@
     position: absolute;
     left: 7px;
     top: 3px;
+}
+
+select[name='siterule_id'] {
+    margin: 10px 0;
+}
+
+._orcAutoVioSubmit {
+    margin-left: 5px;
+}
+
+._orcAutoVio {
+    max-width: 40em !important;
 }
