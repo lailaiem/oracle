@@ -19,7 +19,7 @@ function insertReportEnhance() {
 }
 
 function insertModReportEnhance() {
-	fetchUserVioHistory();
+	fetchUserVioHistory($("#report_users a.user")[1].href);
 
 	// open
 	if ($("a[href='/report?status=closed']").length) {
