@@ -4,7 +4,7 @@ let UNIQUE_ID = 'i0_unset';
 function trackAnalyticsEvent(eventName, eventProps) {
 	if(isDevMode()) {
 		console.log('analytics event', eventName, eventProps);
-		return;
+		eventProps.dev = true;
 	}
 	if (UNIQUE_ID === "i0_unset") {
 		setTimeout(() => trackAnalyticsEvent(eventName, eventProps), 100);
