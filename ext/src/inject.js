@@ -102,7 +102,8 @@ function insertAutoRefresh() {
 	setInterval(() => {
 		if (autoRefresh && document.hasFocus()
 			&& (Date.now() - lastActivity < 5 * 60 * 1000)
-			&& $('.pagenav .grey.smallfont').text() === "Page 1") {
+			&& $('.pagenav .grey.smallfont').text() === "Page 1"
+			&& $('.ll-gamelist.sel').lengh() === 1) {
 			$('.icon-refresh').click();
 		}
 	}, 2200);

@@ -270,7 +270,7 @@ function fetchUserVioHistory(userurl) {
 function getPunishmentFor(vio, existingTimes) {
 	switch (vio) {
 		case 'Game Related Suicide':
-			return l(['warn', '1hr', '12hr', '24hr', 'custom'], existingTimes);
+			return l(['1hr', '12hr', '24hr', 'custom'], existingTimes);
 		break;
 		case 'Trolling':
 			return l(['1hr', '12hr', '24hr', 'custom'], existingTimes);
@@ -310,6 +310,12 @@ function getPunishmentFor(vio, existingTimes) {
 		break;
 		case 'Bypassing Suspensions':
 			return l(['custom'], existingTimes);
+		break;
+		case 'Site Spam':
+			return l(['warn', 'warn', 'custom'], existingTimes);
+		break;
+		case 'Forum Spam':
+			return l(['warn', 'custom'], existingTimes);
 		break;
 		case 'Note':
 			return 'none';
