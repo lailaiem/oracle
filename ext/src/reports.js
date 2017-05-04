@@ -284,6 +284,9 @@ function getPunishmentFor(vio, existingTimes) {
 		case 'Lobby Camping':
 			return l(['warn', 'custom'], existingTimes);
 		break;
+		case 'Repeated Suicides':
+			return l(['warn', 'custom'], existingTimes);
+		break;
 		case 'Spamming':
 			return l(['warn', '1hr', '12hr', '24hr', 'custom'], existingTimes);
 		break;
@@ -299,7 +302,7 @@ function getPunishmentFor(vio, existingTimes) {
 		case 'Lobby Trolling':
 			return l(['warn', 'custom'], existingTimes);
 		break;
-		case 'Outside Game Influence':
+		case 'Outside of Game Influence':
 			return l(['warn', '12hr', '24hr', 'custom'], existingTimes);
 		break;
 		case 'Hateful Comments':

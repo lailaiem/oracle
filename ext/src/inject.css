@@ -328,3 +328,9 @@ select[name='siterule_id'] {
 #settings_inner {
     border: 1px solid #cd88d3 !important;
 }
+
+._orcChatLink {
+    color: #c788d3 !important;
+    font-weight: normal !important;
+    text-decoration: underline;
+}
