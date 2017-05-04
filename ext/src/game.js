@@ -25,7 +25,7 @@ $('.chat').on('mouseenter', '.msg', e => {
 	}
 	const text = $e.text();
 	if (text.indexOf("http") !== -1) {
-		const replaced = $e.text().replace(/https?:\/\/[A-Za-z0-9.\/\-#?_&]*/, "<a href='$&' class='_orcChatLink' target='_blank'>$&</a>");
+		const replaced = $e.text().replace(/https?:\/\/[A-Za-z0-9.\/\-#?_&=]*/, "<a href='$&' class='_orcChatLink' target='_blank'>$&</a>");
 		if (replaced !== text) {
 			$e.html(replaced);
 		}
