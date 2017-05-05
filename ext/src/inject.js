@@ -3,6 +3,11 @@
 let lastActivity = Date.now();
 $('body').mousemove(e => lastActivity = Date.now());
 
+if ($("#move_topic > select").children().length == 2) {
+    var forums = '<option value="26">Moderators Only</option><option value="36">Epicmafia</option><option value="38">General Discussion</option><option value="49">Mentors Only</option><option value="256">Off Topic</option><option value="261">Welcome to EM!</option><option value="535">Games</option><option value="536">Entertainment</option><option value="537">Forum Games</option><option value="565">Food & Drink</option>';
+    $("#move_topic > select").append(forums);
+}
+
 if ($("#top_messages").length) {
 	insertOracleButton();
 }
