@@ -6,7 +6,7 @@ function checkSettings() {
 		UNIQUE_ID = i.a_uniqueId || genUniqueId();
 		chrome.storage.sync.set({
 			a_uniqueId: UNIQUE_ID,
-			a_lastVersion: '0.1.4',
+			a_lastVersion: '0.1.5',
 			s_autoRefresh: i.s_autoRefresh || true,
 			s_blockAutoplay: i.s_blockAutoplay || true,
 			s_emsettings: i.s_emsettings || []
