@@ -334,3 +334,53 @@ select[name='siterule_id'] {
     font-weight: normal !important;
     text-decoration: underline;
 }
+
+.report {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.report_msg {
+    display: inline-block !important;
+}
+
+._orcDragging {
+    opacity: 0.75;
+    transform: scale(0.75);
+    z-index: 100;
+    cursor: pointer;
+}
+
+._orcReportDropTarget {
+    position: relative;
+    border: 2px dashed #c788d3;
+    box-sizing: border-box;
+    margin-top: -2px;
+    margin-bottom: 6px !important;
+}
+
+._orcReportDropTarget::before {
+    content: 'Drop to mark as dupe of this report';
+    font-size: 16pt;
+    color: #c788d3;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    height: calc(100% - 45px - 4px);
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    text-align: center;
+    padding-top: 45pt;
+    background: rgba(255, 255, 255, 0.7);
+
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+._OrcNoUserSelect {
+    user-select: none;
+}

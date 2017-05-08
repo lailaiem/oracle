@@ -10,12 +10,92 @@ if ($("#report_controls").length) {
 	insertModReportEnhance();
 }
 
+if ($(".report_status_list").length) {
+	insertModDupeCloser();
+}
+
 function insertReportEnhance() {
 	// Parse links
 	if ($("#report_msg").html().indexOf("epicmafia.com/")) {
 		$("#report_msg").html($("#report_msg").html().replace(/https:\/\/epicmafia.com\/(report|game)\/(\d+)\/?(?:review)?/g,
 			`<a href="https://epicmafia.com/$1/$2" class="_oLinkReport"><i class="_oracle_icon"></i> $1 $2</a>`));
 	}
+}
+
+function insertModDupeCloser() {
+	$("#report_statistics").prepend(`<div class="inform cnt"><i class="_oracle_icon"></i> With Oracle, you can close dupe reports by dragging the dupe onto the original report with your mouse.</div>`);
+
+	let $dragging = null;
+
+    $(document.body).on("mousemove", e => {
+        if ($dragging) {
+            $dragging.offset({
+                top: e.pageY,
+                left: e.pageX
+            });
+
+            let hasTarget = false;
+	        $(".report:not(._orcDragging)").each((i, el) => {
+	        	const bounds = el.getBoundingClientRect();
+	        	if (e.clientX > bounds.left && e.clientX < bounds.right && e.clientY > bounds.top && e.clientY < bounds.bottom) {
+	        		hasTarget = true;
+	        		if (!$(el).hasClass("_orcReportDropTarget")) {
+				        $("._orcReportDropTarget").removeClass("_orcReportDropTarget");
+	        			$(el).addClass("_orcReportDropTarget");
+	        		}
+	        	}
+	        });
+
+	        if (!hasTarget) {
+				$("._orcReportDropTarget").removeClass("_orcReportDropTarget");
+	        }
+        }
+    });
+    
+    $(document.body).on("mousedown", ".report", e => {
+    	if ($(e.target).is(".report_msg,.user,.redbutton,i.icon-trash,select")) {
+    		return;
+    	}
+
+        $dragging = $(e.currentTarget);
+        $dragging.addClass("_orcDragging");
+        $("body").addClass("_OrcNoUserSelect");
+    });
+    
+    $(document.body).on("mouseup", e => {
+    	if ($dragging) {
+    		$dragging.removeAttr('style');
+    		$dragging.removeClass("_orcDragging");
+
+    		if ($("._orcReportDropTarget").length) {
+    			const $source = $dragging;
+    			const $target = $("._orcReportDropTarget");
+    			const sourceUser = $source.find(".report_user2").text();
+    			const targetUser = $target.find(".report_user2").text();
+
+    			let confirmed = true;
+    			if (sourceUser !== targetUser) {
+    				confirmed = confirm(`These reports are reporting different users\nDupe: ${sourceUser}\nOrig: ${targetUser}\nAre you sure you want to mark these reports as dupe?`);
+    				
+    			}
+    			if (confirmed) {
+					const origURL = $target.find(".report_id").attr("href");
+					const origId = origURL.split("/")[2];
+					const sourceId = $source.find(".report_id").attr("href").split("/")[2];
+					const message = encodeURIComponent(`→ Duplicate of https://epicmafia.com/report/${origURL}`);
+
+					trackAnalyticsEvent('report_dupe_close', {dupeId: sourceId, origId: origId});
+					$.get(`https://epicmafia.com/report/${sourceId}/edit/status?status=closed`);
+					$.get(`https://epicmafia.com/report/${sourceId}/edit/statement?statement=${message}`);
+					$source.slideUp();
+				}
+    			$("._orcReportDropTarget").removeClass("_orcReportDropTarget");
+    		}
+    	}
+    	$("body").removeClass("_OrcNoUserSelect");
+        $dragging = null;
+    });
+
 }
 
 function insertModReportEnhance() {
