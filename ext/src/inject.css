@@ -384,3 +384,8 @@ select[name='siterule_id'] {
 ._OrcNoUserSelect {
     user-select: none;
 }
+
+._orcAutoPlay {
+    font-size: 10pt;
+    text-align: right;
+}

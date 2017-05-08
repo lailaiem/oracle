@@ -22,7 +22,7 @@ if ($("#nav li.sel a").text() === "Round") {
 }
 
 if ($("#usertitle").length) {
-    const userid = $(".lcontrols > a").attr("href").split("/")[2]
+    const userid = $(".lcontrols > a").attr("href").split("/")[2];
 
     $.get(`https://epicmafia.com/uploads/deathsounds/${userid}.ogg`, () => {
         $("#finduserbox").append(`<span class="lcontrols"><a class="_oDeath"><i class="icon-music" style="color: #c788d3"></i></a></span>`);
@@ -33,6 +33,27 @@ if ($("#usertitle").length) {
     		}, 200);
     	});
     });
+}
+
+if ($("#ytplayer").length) {
+	getSetting("s_blockAutoplay", s => {
+		const blockAutoplay = s.s_blockAutoplay;
+		$("#ytplayer").after(`<div class="_orcAutoPlay">
+			<input type="checkbox" id="_oBlockAutoplayBox" ${blockAutoplay ? "checked" : ""}/>
+			<label for="_oBlockAutoplayBox"><i class="_oracle_icon"></i> No autoplay</label>
+			</div>`);
+		if (blockAutoplay) {
+			const userid = $(".lcontrols > a").attr("href").split("/")[2];
+			trackAnalyticsEvent('autoplay_blocked', {userid});
+
+			let src = $("#ytplayer").attr("src");
+			src = src.replace("?autoplay=1", "");
+			$("#ytplayer").attr("src", src);
+		}
+		$("#_oBlockAutoplayBox").change(e => {
+			setSetting({s_blockAutoplay: e.target.checked});
+		});
+	});
 }
 
 if ($("#admin_info").length) {
