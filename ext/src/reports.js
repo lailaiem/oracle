@@ -23,9 +23,11 @@ function insertReportEnhance() {
 }
 
 function insertModDupeCloser() {
-	$("#report_statistics").prepend(`<div class="inform cnt"><i class="_oracle_icon"></i> With Oracle, you can close dupe reports by dragging the dupe onto the original report with your mouse.</div>`);
+	$("#report_statistics").prepend(`<div class="inform cnt"><i class="_oracle_icon"></i> With Oracle, you can drag (☰) dupe reports onto the original report to close them.</div>`);
 
 	let $dragging = null;
+
+	$(".report .report_top a:last-child").after(`<span class='_orcHandler' title='Drag me for dupe closer...'>☰</span>`);
 
     $(document.body).on("mousemove", e => {
         if ($dragging) {
@@ -53,7 +55,7 @@ function insertModDupeCloser() {
     });
     
     $(document.body).on("mousedown", ".report", e => {
-    	if ($(e.target).is(".report_msg,.user,.redbutton,i.icon-trash,select")) {
+    	if (!$(e.target).is("._orcHandler")) {
     		return;
     	}
 
@@ -82,7 +84,7 @@ function insertModDupeCloser() {
 					const origURL = $target.find(".report_id").attr("href");
 					const origId = origURL.split("/")[2];
 					const sourceId = $source.find(".report_id").attr("href").split("/")[2];
-					const message = encodeURIComponent(`→ Duplicate of https://epicmafia.com/report/${origURL}`);
+					const message = encodeURIComponent('→ Duplicate of https://epicmafia.com' + origURL.toString());
 
 					trackAnalyticsEvent('report_dupe_close', {dupeId: sourceId, origId: origId});
 					$.get(`https://epicmafia.com/report/${sourceId}/edit/status?status=closed`);
@@ -119,7 +121,7 @@ function insertModReportEnhance() {
 	// Auto close
 	if ($("#create_report_statement").length) {
 
-	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio"><i class="_oracle_icon"></i> nv</a>`);
+	    $("#create_report_statement").append(`<a class="redbutton smallfont _oNoVio">nv</a> <a class="redbutton smallfont _oDupe">dupe</a>`);
 
 	    $("#create_report_statement").after(`<div id="_oCloseReport"><input type="checkbox" id="_oCloseReportBox" checked\ />
 			<label for="_oCloseReport"><i class="_oracle_icon"></i> Close report upon submitting verdict</label></div>`);
@@ -157,11 +159,12 @@ function insertModReportEnhance() {
 		}
 	});
 
-	$("._oNoVio").click(e => {
-		trackAnalyticsEvent('report_novio', {reportId});
+	$("._oNoVio,._oDupe").click(e => {
+		const isNoVio = $(e.target).hasClass("_oNoVio");
+		isNoVio ? trackAnalyticsEvent('report_novio', {reportId}) : trackAnalyticsEvent('report_dupe', {reportId});
 		let count = 2;
 		$.get(`https://epicmafia.com/report/${reportId}/edit/status?status=closed`, next);
-		$.get(`https://epicmafia.com/report/${reportId}/edit/statement?statement=no+violation`, next);
+		$.get(`https://epicmafia.com/report/${reportId}/edit/statement?statement=${isNoVio ? 'no+violation' : 'duplicate'}`, next);
 
 		function next() {
 			count--;

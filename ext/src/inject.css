@@ -157,7 +157,7 @@
     font-size: 14px;
 }
 
-._oChangeStatus, ._oNoVio, ._orcAutoVioSubmit {
+._oChangeStatus, ._oNoVio, ._oDupe, ._orcAutoVioSubmit {
     background: linear-gradient(to bottom, #c490ce 0%,#b871c6 100%) !important;
 }
 
@@ -388,4 +388,9 @@ select[name='siterule_id'] {
 ._orcAutoPlay {
     font-size: 10pt;
     text-align: right;
+}
+
+._orcHandler {
+    color: #c788d3;
+    cursor: pointer;
 }
