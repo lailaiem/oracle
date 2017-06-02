@@ -3,6 +3,26 @@
 let lastActivity = Date.now();
 $('body').mousemove(e => lastActivity = Date.now());
 
+$("ul li:eq(0)").append ( `
+    <div class="_orcDropdownContent">
+        <a href="https://epicmafia.com/game/new">Create game</a>
+        <a href="https://epicmafia.com/setup">Find setup</a>
+        <a href="https://epicmafia.com/lobby/rules">Rules</a>
+    ` );
+
+$("ul li:eq(1)").append ( `
+    <div class="_orcDropdownContent">
+        <a href="https://epicmafia.com/message">Inbox</a>
+        <a href="https://epicmafia.com/family">Family</a>
+        <a href="https://epicmafia.com/addon">Buy</a>
+    ` );
+
+$("ul li:eq(2)").append ( `
+    <div class="_orcDropdownContent">
+        <a href="https://epicmafia.com/moderator">Moderators</a>
+        <a href="https://epicmafia.com/report">Reports</a>
+    ` );
+
 if ($("#move_topic > select").children().length == 2) {
     var forums = '<option value="26">Moderators Only</option><option value="36">Epicmafia</option><option value="38">General Discussion</option><option value="49">Mentors Only</option><option value="256">Off Topic</option><option value="261">Welcome to EM!</option><option value="535">Games</option><option value="536">Entertainment</option><option value="537">Forum Games</option><option value="565">Food & Drink</option>';
     $("#move_topic > select").append(forums);
