@@ -424,3 +424,8 @@ select[name='siterule_id'] {
 li:hover ._orcDropdownContent {
     display: block;
 }
+
+#orcReportPreview {
+    height: 100vh;
+    width: 100%;
+}

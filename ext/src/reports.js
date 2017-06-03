@@ -291,6 +291,23 @@ function fetchUserVioHistory(userurl) {
 					data-action='${punish}' data-vio='${selectedVio}' data-viotext='${selectedVio} ${newCountText} - ${readablePunishmentFor(punish)}'><i class="_oracle_icon"></i> Autovio: ${punish}</a>`);
 			}
 		});
+
+		// Automatically suggest vio
+		const availableVios = [];
+		$("select[name='siterule_id'] option").each((i, e) => availableVios.push($(e).text()));
+
+		const preselectVio = determineLikelyViolation($("#report_msg").text(), availableVios);
+		if (preselectVio) {
+			$("select[name='siterule_id'] option").filter(function(){
+				return $(this).text() == preselectVio;
+			}).prop('selected', true);
+			$("select[name='siterule_id']").change();
+		}
+
+		// iframe the game
+		/* if ($("#report_users a.pretty.smallfont").length) {
+			$("#container").after(`<iframe id='orcReportPreview' src="${$("#report_users a.pretty.smallfont").attr('href')}"></iframe>`);
+		} */
 	});
 
 
@@ -348,6 +365,28 @@ function fetchUserVioHistory(userurl) {
 			}
 		}
 	});
+}
+
+function determineLikelyViolation(reportText, vios) {
+	const shorthandMap = {
+		'grs': 'Game Related Suicide',
+		'isp': 'Insufficient Participation',
+		'gt': 'Game Throwing'
+	};
+	reportText = reportText.toLowerCase();
+
+	for (let k in shorthandMap) {
+		if (reportText.indexOf(k) !== -1) {
+			return shorthandMap[k];
+		}
+	}
+
+	for (let v in vios) {
+		if (reportText.indexOf(vios[v].toLowerCase()) !== -1) {
+			return vios[v];
+		}
+	}
+	return null;
 }
 
 function getPunishmentFor(vio, existingTimes) {
