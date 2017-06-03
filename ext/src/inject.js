@@ -3,21 +3,21 @@
 let lastActivity = Date.now();
 $('body').mousemove(e => lastActivity = Date.now());
 
-$("ul li:eq(0)").append ( `
+$("#header_inner ul li:eq(0)").append ( `
     <div class="_orcDropdownContent">
         <a href="https://epicmafia.com/game/new">Create game</a>
         <a href="https://epicmafia.com/setup">Find setup</a>
         <a href="https://epicmafia.com/lobby/rules">Rules</a>
     ` );
 
-$("ul li:eq(1)").append ( `
+$("#header_inner ul li:eq(1)").append ( `
     <div class="_orcDropdownContent">
         <a href="https://epicmafia.com/message">Inbox</a>
         <a href="https://epicmafia.com/family">Family</a>
         <a href="https://epicmafia.com/addon">Buy</a>
     ` );
 
-$("ul li:eq(2)").append ( `
+$("#header_inner ul li:eq(2)").append ( `
     <div class="_orcDropdownContent">
         <a href="https://epicmafia.com/moderator">Moderators</a>
         <a href="https://epicmafia.com/report">Reports</a>
@@ -91,7 +91,6 @@ function insertOracleButton() {
 		$("#container").prepend(`<div id="_oracle_window">
 				<div class="_owHeader">
 					<i class="_oracle_icon"></i> <span class="_owTitle">Oracle</span>
-					<span class="_owVersion">v0.1.3</span>
 				</div>
 				<div class="_owQuickNav">
 					<i class="icon-search"></i><input id="_owUser" class="_oInput" type="text" placeholder="Open profile of..." />
