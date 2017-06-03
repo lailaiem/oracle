@@ -430,3 +430,7 @@ li:hover ._orcDropdownContent {
     height: 100vh;
     width: 100%;
 }
+
+._orcModAction {
+    border-color: #cd88d3 !important;
+}

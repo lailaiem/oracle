@@ -79,7 +79,33 @@ if ($("#ytplayer").length) {
 if ($("#admin_info").length) {
 		$("a.pretty").before(
 			`<a class="smallfont pretty _oBackLink" href="/report?status=open"><i class="icon-reply red"></i> Back (Open)</a>`)
+}
+
+if ($("#mod_actions").length) {
+	let pollInt = setInterval(() => {
+		clear();
+	}, 250);
+
+	$("#mod_actions").on("click", "#actionpages a", () => {
+		clearInterval(pollInt);
+		pollInt = setInterval(() => clear(), 500);
+	});
+
+	function clear() {
+		if ($(".action_reason").length) {
+			clearInterval(pollInt);
+		} else {
+			return;
+		}
+
+		$(".action_reason").each((i, e) => {
+			if ($(e).text().indexOf("via Oracle") !== -1) {
+				$(e).text($(e).text().replace(" (via Oracle)", ""));
+				$(e).addClass("_orcModAction");
+			}
+		})
 	}
+}
 
 function insertOracleButton() {
 	$("#top_messages").after('<div id="_oracle_button"><a><i class="_oracle_icon"></i><span>Oracle</span></a></div>');
