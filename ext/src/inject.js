@@ -154,8 +154,16 @@ function insertAutoRefresh() {
 		}
 	}, 2200);
 
+
+	$(document).focus(() => {
+		if (autoRefresh) {
+			$('.icon-refresh').click();
+		}
+	});
+
 	});
 }
+
 
 function insertRehost() {
 	$("body").on("mouseenter", ".gamerow", e => {
