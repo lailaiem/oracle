@@ -1,8 +1,8 @@
 {
-  "name": "Oracle for Epicmafia",
-  "version": "0.1.8",
+  "name": "DISCONTINUED - Oracle for Epicmafia",
+  "version": "0.2.0",
   "manifest_version": 2,
-  "description": "Oracle makes Epicmafia better and adds new features. Developed by lailai",
+  "description": "This extension has been discontinued. Please uninstall this extension.",
   "icons": {
     "19": "icons/icon19.png",
     "48": "icons/icon48.png"
@@ -26,11 +26,7 @@
       ],
       "js": [
       	"src/jquery.min.js",
-        "src/analytics.js",
-        "src/settings.js",
-        "src/inject.js",
-        "src/reports.js",
-        "src/game.js"
+        "src/warning.js"
       ]
     }
   ]
